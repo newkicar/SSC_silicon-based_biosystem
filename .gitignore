@@ -25,7 +25,9 @@ data/*.db-journal
 data/db_index.pkl
 data/rag_index.pkl
 data/chroma_db/
-databases/
+# Databases folder (keep empty, ignore all contents)
+databases/**
+!databases/.gitkeep
 
 # Memories (runtime generated)
 memories/*.md
@@ -69,3 +71,6 @@ specs/
 cline-desktop-settings.json
 harness.config.json
 desensitized_*.xlsx
+
+# Excel temp/lock files
+~\$*.xlsx

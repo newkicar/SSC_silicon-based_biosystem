@@ -1,6 +1,6 @@
 """
 花名册自动刷新脚本
-从CC/DL清册中提取数据，结合[ERP系统接口]的岗级信息，生成完整的花名册。
+从清册中提取数据，结合[ERP系统接口]的岗级信息，生成完整的花名册。
 """
 
 import sys
@@ -26,7 +26,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DB_DIR = PROJECT_ROOT / "databases"
 
 
-# 通配解析：自动匹配目录中最新的 CC/DL 清册文件
+# 通配解析：自动匹配目录中最新的  清册文件
 def _resolve_latest(pattern: str, label: str) -> Path:
     """从 pattern（含 * 通配符）中解析出匹配的最新文件路径。"""
     matches = sorted(glob.glob(pattern))
@@ -126,9 +126,9 @@ def read_roster_sheet_from_bytes(file_bytes, sheet_name, source_label):
 
 
 def step1_stack_sheets():
-    """Step 1: 解密CC/DL，合并4个sheet"""
+    """Step 1: 解密，合并4个sheet"""
     print("=" * 60)
-    print("Step 1: 解密CC/DL，合并 Employee list + 离职")
+    print("Step 1: 解密，合并 Employee list + 离职")
     print("=" * 60)
 
     sources = [

@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Data (runtime generated)
+data/backups/*
+data/*.db
+data/*.db-journal
+data/db_index.pkl
+data/rag_index.pkl
+data/chroma_db/
+databases/
+
+# Memories (runtime generated)
+memories/*.md
+!memories/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+大胃王/
+RAG_files/
+tests/
+
+# Marathon Agent runtime state
+.marathon/
+
+# Large data files (exceeds GitHub 100MB limit)
+*.joblib
+*.bin
+*.safetensors
+*.gguf
+
+# Skill packages (server-side uploaded zips)
+data/skill_packages/
+data/skill_packages/*/
+
+# CLI local skills (synced from server, do not commit)
+skills/*/SKILL.md
+skills/*/scripts/
+skills/local_manifest.json

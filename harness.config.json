@@ -1,0 +1,8 @@
+{
+    "version": "1.2.1",
+    "l2": {
+        "deepagents": "l2/02-deepagents-code-rule.md",
+        "pytorch": "l2/03-pytorch-code-rule.md"
+    },
+    "enabledL2": []
+}

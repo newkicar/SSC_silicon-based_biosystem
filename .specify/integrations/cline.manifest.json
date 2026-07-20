@@ -1,0 +1,18 @@
+{
+    "integration":  "cline",
+    "version":  "0.11.9.dev0",
+    "installed_at":  "2026-07-04T02:56:21.1757368Z",
+    "files":  {
+                  ".clinerules/workflows/speckit/speckit-implement.md":  "8358db7aeb9f10e27a51dbda4b2a9ef90e178f50e092dc60480796793f4675fa",
+                  ".clinerules/workflows/speckit/speckit-taskstoissues.md":  "87b57742ba296252dcf3f053271330501e6b606f707320da81b048ecfb212169",
+                  ".clinerules/workflows/speckit/speckit-tasks.md":  "846461cd3ad18f2eb4dd09385337494c0b87b369700c70b16d3060d45b09c471",
+                  ".clinerules/workflows/speckit/speckit-checklist.md":  "fbd9b651ae413cd94180065c69f1a36eded3cac2b3000b72eab3f1da941435ad",
+                  ".clinerules/workflows/speckit/speckit-plan.md":  "b2e39b5cc6f17ba7c814d23737aea2de8d76fa2b3e5345a3b93b50c740da7022",
+                  ".clinerules/workflows/speckit/speckit-converge.md":  "7bdf8ce21efb9e44c5f4a5e5e85fc3f25a37791575c14ef21192b268555206ff",
+                  ".clinerules/workflows/speckit/speckit-specify.md":  "09a598fefb0064a56dc1e854a27ccb74a20e7a6bb3e66c7b242d3fe386c0603a",
+                  ".clinerules/workflows/speckit/speckit-agent-context-update.md":  "07cfa68f222c80210e21828daa6b058b8375910a6f06fe05e15247a2b5656ca3",
+                  ".clinerules/workflows/speckit/speckit-analyze.md":  "98d53a182dce2f73451ec7001a5248e48e9d37fb82c0d65432b638de38de2052",
+                  ".clinerules/workflows/speckit/speckit-clarify.md":  "f54e610c97e0734efd91394fe7a913e01499d2adc6a29f1cff4d5f554ce5ecb0",
+                  ".clinerules/workflows/speckit/speckit-constitution.md":  "4b9ee5780ecc73335dd34a1132510a16d9d9422f269ad73e463bf34bb574ad69"
+              }
+}

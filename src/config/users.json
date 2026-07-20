@@ -1,0 +1,559 @@
+{
+  "_comment": "SSC硅基生物系统 - 用户配置文件。修改此文件即可增删用户/调整角色，无需修改代码。",
+  "_usage": "seed_users.py 读取此文件初始化用户数据库",
+  "management_users": [
+    {
+      "username": "U000028",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员010",
+      "role": "首席执行官",
+      "company": "[公司名称]公司",
+      "department": "虚拟5部",
+      "employee_id": "EMP0028"
+    },
+    {
+      "username": "U000033",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员030",
+      "role": "首席运营官",
+      "company": "[公司名称]公司",
+      "department": "虚拟5部",
+      "employee_id": "EMP0033"
+    },
+    {
+      "username": "U000032",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员018",
+      "role": "首席执行官",
+      "company": "[关联公司]",
+      "department": "虚拟6部",
+      "employee_id": "EMP0032"
+    },
+    {
+      "username": "U000024",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员020",
+      "role": "首席运营官",
+      "company": "[关联公司]",
+      "department": "虚拟6部",
+      "employee_id": "EMP0024"
+    },
+    {
+      "username": "U000043",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员013",
+      "role": "事业部负责人",
+      "company": "[公司名称]公司",
+      "department": "虚拟29部",
+      "employee_id": "EMP0043"
+    },
+    {
+      "username": "U000013",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员006",
+      "role": "事业部负责人",
+      "company": "[公司名称]公司",
+      "department": "虚拟8部",
+      "employee_id": "EMP0013"
+    },
+    {
+      "username": "U000029",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员001",
+      "role": "事业部负责人",
+      "company": "[公司名称]公司",
+      "department": "虚拟21部",
+      "employee_id": "EMP0029"
+    },
+    {
+      "username": "U000018",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员029",
+      "role": "事业部负责人",
+      "company": "[公司名称]公司",
+      "department": "虚拟17部",
+      "employee_id": "EMP0018"
+    },
+    {
+      "username": "U000040",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员016",
+      "role": "事业部负责人",
+      "company": "[关联公司]",
+      "department": "虚拟9部",
+      "employee_id": "EMP0040"
+    },
+    {
+      "username": "U000021",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员042",
+      "role": "事业部负责人",
+      "company": "[公司名称]公司",
+      "department": "虚拟1部",
+      "employee_id": "EMP0021"
+    },
+    {
+      "username": "U000014",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员035",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟2部",
+      "employee_id": "EMP0014"
+    },
+    {
+      "username": "U000027",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员032",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟27部",
+      "employee_id": "EMP0027"
+    },
+    {
+      "username": "U000036",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员012",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟23部",
+      "employee_id": "EMP0036"
+    },
+    {
+      "username": "U000019",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员037",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟20部",
+      "employee_id": "EMP0019"
+    },
+    {
+      "username": "U000023",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员003",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟10部",
+      "employee_id": "EMP0023"
+    },
+    {
+      "username": "U000025",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员023",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟12部",
+      "employee_id": "EMP0025"
+    },
+    {
+      "username": "U000030",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员036",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟16部",
+      "employee_id": "EMP0030"
+    },
+    {
+      "username": "U000010",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员019",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟19部",
+      "employee_id": "EMP0010"
+    },
+    {
+      "username": "U000035",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员024",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟15部",
+      "employee_id": "EMP0035"
+    },
+    {
+      "username": "U000020",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员007",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟7部",
+      "employee_id": "EMP0020"
+    },
+    {
+      "username": "U000011",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员043",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟14部",
+      "employee_id": "EMP0011"
+    },
+    {
+      "username": "U000026",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员028",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟30部",
+      "employee_id": "EMP0026"
+    },
+    {
+      "username": "U000015",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员021",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟18部",
+      "employee_id": "EMP0015"
+    },
+    {
+      "username": "U000037",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员026",
+      "role": "部门主管",
+      "company": "[关联公司]",
+      "department": "虚拟11部",
+      "employee_id": "EMP0037"
+    },
+    {
+      "username": "U000022",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员015",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟3部",
+      "employee_id": "EMP0022"
+    },
+    {
+      "username": "U000034",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员040",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟4部",
+      "employee_id": "EMP0034"
+    },
+    {
+      "username": "U000012",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员027",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟26部",
+      "employee_id": "EMP0012"
+    },
+    {
+      "username": "U000017",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员008",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟24部",
+      "employee_id": "EMP0017"
+    },
+    {
+      "username": "U000016",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员041",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟25部",
+      "employee_id": "EMP0016"
+    },
+    {
+      "username": "U000031",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员038",
+      "role": "部门主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟22部",
+      "employee_id": "EMP0031"
+    },
+    {
+      "username": "U000041",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员022",
+      "role": "人力资源业务伙伴",
+      "company": "[公司名称]公司",
+      "department": "虚拟1部",
+      "employee_id": "EMP0041"
+    },
+    {
+      "username": "U000042",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员034",
+      "role": "人力资源业务伙伴",
+      "company": "[公司名称]公司",
+      "department": "虚拟13部",
+      "employee_id": "EMP0042"
+    },
+    {
+      "username": "U000038",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员002",
+      "role": "人力资源业务伙伴",
+      "company": "[公司名称]公司",
+      "department": "虚拟29部",
+      "employee_id": "EMP0038"
+    },
+    {
+      "username": "U000039",
+      "password": "{{PASSWORD}}",
+      "display_name": "虚拟人员014",
+      "role": "人力资源业务伙伴",
+      "company": "[公司名称]公司",
+      "department": "虚拟13部",
+      "employee_id": "EMP0039"
+    }
+  ],
+  "ssc_users": [
+    {
+      "username": "U000001",
+      "password": "924757",
+      "display_name": "虚拟人员004",
+      "role": "HR_SSC学科经理",
+      "company": "[公司名称]公司",
+      "department": "虚拟28部",
+      "employee_id": "EMP0001",
+      "channels": "web,cli",
+      "specialization": "处理上级或大脑发来的SSC组织管理工作及重大问题处理工作"
+    },
+    {
+      "username": "U000003",
+      "password": "765595",
+      "display_name": "虚拟人员017",
+      "role": "高级HRIS工程师",
+      "company": "[公司名称]公司",
+      "department": "虚拟28部",
+      "employee_id": "EMP0003",
+      "channels": "web,cli",
+      "specialization": "处理上级或大脑发来的HR硅基生物系统问题、HCM系统维护及功能变更等问题"
+    },
+    {
+      "username": "U000002",
+      "password": "661254",
+      "display_name": "虚拟人员025",
+      "role": "招聘主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟28部",
+      "employee_id": "EMP0002",
+      "channels": "web,cli",
+      "specialization": "处理上级或大脑发来的招聘管理、员工关系管理等需求"
+    },
+    {
+      "username": "U000005",
+      "password": "274054",
+      "display_name": "虚拟人员009",
+      "role": "员工关系专员",
+      "company": "[公司名称]公司",
+      "department": "虚拟28部",
+      "employee_id": "EMP0005",
+      "channels": "web,cli",
+      "specialization": "处理上级或大脑发来的招聘需求"
+    },
+    {
+      "username": "U000006",
+      "password": "914602",
+      "display_name": "虚拟人员031",
+      "role": "员工关系专员",
+      "company": "[公司名称]公司",
+      "department": "虚拟28部",
+      "employee_id": "EMP0006",
+      "channels": "web,cli",
+      "specialization": "处理上级或大脑发来的人事系统年度批量数据维护、月度小级别晋升数据维护、季度大级别晋升数据维护、组织架构管理、员工关系KPI数据报告制作、母公司编制、公司内部流程制定和优化、员工关系迎审等需求、管理层权限授权管理、劳动争议处理及风险管控、下发违纪通知函、政府及母公司调取数据对接及处理"
+    },
+    {
+      "username": "U000008",
+      "password": "688750",
+      "display_name": "虚拟人员033",
+      "role": "员工关系专员",
+      "company": "[公司名称]公司",
+      "department": "虚拟28部",
+      "employee_id": "EMP0008",
+      "channels": "web,cli",
+      "specialization": "处理上级或大脑发来的人事系统日常数据维护、员工花名册维护、员工关系数据报表制作、新员工入职接待、员工入转调离工作、员工档案管理工作等需求"
+    },
+    {
+      "username": "U000004",
+      "password": "972060",
+      "display_name": "虚拟人员039",
+      "role": "薪酬主管",
+      "company": "[公司名称]公司",
+      "department": "虚拟28部",
+      "employee_id": "EMP0004",
+      "channels": "web,cli",
+      "specialization": "处理上级或大脑发来的薪酬政策、薪酬沟通、薪酬审核、人效数据处理等需求"
+    },
+    {
+      "username": "U000009",
+      "password": "856079",
+      "display_name": "虚拟人员011",
+      "role": "薪酬专员",
+      "company": "[公司名称]公司",
+      "department": "虚拟28部",
+      "employee_id": "EMP0009",
+      "channels": "web,cli",
+      "specialization": "处理上级或大脑发来的工资核算、人工成本模拟测算等需求"
+    },
+    {
+      "username": "U000007",
+      "password": "534761",
+      "display_name": "虚拟人员005",
+      "role": "考勤专员",
+      "company": "[公司名称]公司",
+      "department": "虚拟28部",
+      "employee_id": "EMP0007",
+      "channels": "web,cli",
+      "specialization": "处理上级或大脑发来的考勤咨询、考勤预警、考勤对接、考勤数据维护、考勤表生成等需求"
+    }
+  ],
+  "role_assignments": [
+    {
+      "username": "U000043",
+      "role": "总监",
+      "org": "虚拟8组织",
+      "org_level": "center"
+    },
+    {
+      "username": "U000043",
+      "role": "总监",
+      "org": "虚拟13组织",
+      "org_level": "center"
+    },
+    {
+      "username": "U000013",
+      "role": "总监",
+      "org": "虚拟14组织",
+      "org_level": "center"
+    },
+    {
+      "username": "U000013",
+      "role": "总监",
+      "org": "虚拟11组织",
+      "org_level": "center"
+    },
+    {
+      "username": "U000029",
+      "role": "总监",
+      "org": "虚拟5组织",
+      "org_level": "department"
+    },
+    {
+      "username": "U000029",
+      "role": "总监",
+      "org": "虚拟12组织",
+      "org_level": "department"
+    },
+    {
+      "username": "U000029",
+      "role": "总监",
+      "org": "虚拟4组织",
+      "org_level": "center"
+    },
+    {
+      "username": "U000040",
+      "role": "总监",
+      "org": "虚拟15组织",
+      "org_level": "center"
+    },
+    {
+      "username": "U000040",
+      "role": "总监",
+      "org": "虚拟7组织",
+      "org_level": "center"
+    },
+    {
+      "username": "U000040",
+      "role": "经理",
+      "org": "虚拟10组织",
+      "org_level": "department"
+    },
+    {
+      "username": "U000040",
+      "role": "经理",
+      "org": "虚拟6组织",
+      "org_level": "department"
+    },
+    {
+      "username": "U000041",
+      "role": "HRBP",
+      "org": "虚拟9组织",
+      "org_level": "center"
+    },
+    {
+      "username": "U000042",
+      "role": "HRBP",
+      "org": "虚拟1组织",
+      "org_level": "company"
+    },
+    {
+      "username": "U000042",
+      "role": "HRBP",
+      "org": "虚拟14组织",
+      "org_level": "center"
+    },
+    {
+      "username": "U000038",
+      "role": "HRBP",
+      "org": "虚拟8组织",
+      "org_level": "center"
+    },
+    {
+      "username": "U000038",
+      "role": "HRBP",
+      "org": "虚拟11组织",
+      "org_level": "center"
+    },
+    {
+      "username": "U000038",
+      "role": "HRBP",
+      "org": "虚拟4组织",
+      "org_level": "center"
+    },
+    {
+      "username": "U000038",
+      "role": "HRBP",
+      "org": "虚拟13组织",
+      "org_level": "center"
+    },
+    {
+      "username": "U000038",
+      "role": "HRBP",
+      "org": "虚拟7组织",
+      "org_level": "center"
+    },
+    {
+      "username": "U000001",
+      "role": "HRBP",
+      "org": "虚拟3组织",
+      "org_level": "center"
+    },
+    {
+      "username": "U000001",
+      "role": "HR_SSC学科经理",
+      "org": "虚拟2组织",
+      "org_level": "department"
+    },
+    {
+      "username": "U000039",
+      "role": "HRBP",
+      "org": "虚拟1组织",
+      "org_level": "company"
+    },
+    {
+      "username": "U000039",
+      "role": "HRBP",
+      "org": "虚拟14组织",
+      "org_level": "center"
+    },
+    {
+      "username": "U000002",
+      "role": "员工关系主管",
+      "org": "",
+      "org_level": ""
+    }
+  ]
+}

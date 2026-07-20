@@ -1,0 +1,11 @@
+{
+    "schema_version": 1,
+    "commit": "",
+    "indexed_at": "2026-07-02T21:10:57Z",
+    "project": "D-Python-Project-deepagents-ssc-silicon-biosys",
+    "nodes": 5581,
+    "edges": 10299,
+    "original_size": 8650752,
+    "compressed_size": 1628873,
+    "compression_level": 9
+}

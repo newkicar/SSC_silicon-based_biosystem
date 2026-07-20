@@ -1,0 +1,4 @@
+{{INTERNAL_DATA_PATH}}Downloads
+D:\工作内容
+{{INTERNAL_WORK_PATH}}大胃王
+D:\

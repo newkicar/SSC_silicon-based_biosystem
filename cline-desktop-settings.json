@@ -1,0 +1,49 @@
+{
+    "hooks": {
+        "preToolUse": {
+            "enabled": true,
+            "command": "powershell -ExecutionPolicy Bypass -File .clinerules/hooks/PreToolUse.ps1",
+            "timeout": 10000
+        },
+        "postToolUse": {
+            "enabled": true,
+            "command": "powershell -ExecutionPolicy Bypass -File .clinerules/hooks/PostToolUse.ps1",
+            "timeout": 15000
+        },
+        "sessionEnd": {
+            "enabled": true,
+            "trigger": [
+                "disconnect",
+                "manual",
+                "say:收工"
+            ]
+        }
+    },
+    "rules": {
+        "directories": [
+            ".clinerules"
+        ],
+        "include": [
+            "00-core.md",
+            "01-ponytail.md",
+            "hooks/*.md",
+            "workflows/**/*.md",
+            "specify-rules.md"
+        ],
+        "exclude": [
+            "l2/**"
+        ]
+    },
+    "skills": {
+        "directories": [
+            ".agents/skills"
+        ],
+        "autoDiscover": true
+    },
+    "workflows": {
+        "directories": [
+            ".clinerules/workflows"
+        ],
+        "default": "verify-changes"
+    }
+}

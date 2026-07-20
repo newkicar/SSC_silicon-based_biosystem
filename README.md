@@ -170,14 +170,10 @@ python -X utf8 -m staff.terminal --server http://localhost:8000 --user Vxxxxx --
 | 角色 | 职责范围 |
 |------|---------|
 | HR_SSC经理 | SSC全面管理、跨部门协调 |
-| HR_SSC学科经理 | 学科领域决策、政策执行监督 |
-| 高级HRIS工程师 | 系统架构、数据安全、接口对接 |
 | HRIS工程师 | 系统日常维护、数据对接 |
-| 员工关系主管 | 员工关系管理、劳动争议处理 |
-| 员工关系专员 | 合同管理、证明开具、社保办理 |
+| 员工关系主管 / 专员 | 员工关系管理、劳动争议处理、合同管理、证明开具 |
 | 招聘主管/专员 | 招聘策略、简历筛选、面试安排 |
-| 薪酬主管/专员 | 薪酬体系、薪资核算、社保公积金 |
-| 考勤专员 | 考勤管理、排班管理 |
+| 薪酬主管/专员 | 薪酬体系、薪资核算、社保公积金、考勤管理、排班管理 |
 
 ### 用户信息同步
 
@@ -197,8 +193,8 @@ python -X utf8 scripts/sync_users_from_json.py
 name: skill-outlook-controller
 description: 自动化操作Outlook邮件客户端...
 target_roles:
-  - HR_SSC学科经理
-  - 高级HRIS工程师
+  - HR_SSC经理
+  - 薪酬专员
   - 员工关系专员
 ---
 ```
@@ -215,37 +211,9 @@ target_roles:
 | 数据源 | 文件 | 用途 | 更新方式 |
 |--------|------|------|---------|
 | 员工花名册 | `databases/员工花名册.xlsx` | 人事数据、部门架构 | `scripts/refresh_roster.py` |
-| 加班基础数据 | `databases/加班基础数据.xlsx` | 考勤/加班/出勤率 | `scripts/build_overtime.py` |
-| 政策文档 | `RAG_files/` | 员工手册、考勤制度等 | 手动放入 |
+| 考勤基础数据 | `databases/考勤基础数据.xlsx` | 考勤/信息 | `scripts/build_overtime.py` |
+| 政策文档 | `RAG_files/` | HR制度、政策文件等 | 手动放入 |
 | 向量索引 | `data/db_index.pkl` | 加速语义检索 | 自动/手动 |
-
-### 花名册自动刷新
-
-从CC/DL人员清册解密 + [ERP系统接口]岗级匹配，自动生成完整花名册：
-
-```bash
-# 刷新花名册（需修改脚本中 CC/DL 文件路径）
-python -X utf8 scripts/refresh_roster.py
-
-# 刷新后更新向量索引
-python -m src.api.server --update-db 员工花名册.xlsx
-```
-
-**处理流程：** 解密CC/DL → 合并4个sheet → [ERP系统接口]岗级匹配 → 部门规范化 → 中心补全 → 衍生字段 → 蓝领白领分类 → 特殊修正 → 删除高管 → 大级别识别 → 括号替换 → 写入Excel
-
-### 加班数据自动构建
-
-从SAP考勤API获取数据，计算每人每月加班时长/出勤率，追加写入Excel：
-
-```bash
-# 默认：当天=1日拉上月整月，≥2日拉本月1日~昨天
-python -X utf8 scripts/build_overtime.py
-
-# 指定日期范围
-python -X utf8 scripts/build_overtime.py --begin 2026-01-01 --end 2026-06-17
-```
-
-**写入逻辑：** 读取已有文件 → 删除目标月份旧数据 → 追加新数据 → 保留其他月份（当月覆盖，跨月累加）
 
 ### 服务端启动与数据更新
 
@@ -256,15 +224,11 @@ python -m src.api.server
 # 指定端口 + 监听地址
 python -m src.api.server --port 8001 --host 0.0.0.0
 
-# 只更新指定文件的向量索引（数据更新后使用）
-python -m src.api.server --update-db 员工花名册.xlsx
-python -m src.api.server --update-db 加班基础数据.xlsx
-
 # 全量重建所有向量索引
 python -m src.api.server --update
 ```
 
-**自动更新：** 服务运行时，每天凌晨05:00自动刷新花名册 + 加班数据 + 向量索引（详见定时任务章节）
+**自动更新：** 服务运行时，每天凌晨05:00自动刷新花名册 + 考勤数据 + 向量索引（其他数据有待实现）（详见定时任务章节）
 
 ---
 
@@ -273,7 +237,7 @@ python -m src.api.server --update
 | 任务 | 时间 | 说明 |
 |------|------|------|
 | 凌晨记忆整理 | 02:00 | 调用大脑提炼关键决策和待办 |
-| 数据自动更新 | 05:00 | 刷新花名册 + 加班数据 + 增量更新向量索引 + **自动洞察通知** |
+| 数据自动更新 | 05:00 | 刷新花名册 + 考勤数据 + 增量更新向量索引 + **自动洞察通知** |
 | 晨间扫描 | 08:00 | 生成晨报（待办事项+关注事项） |
 | 日终总结 | 18:00 | 生成日报告（重要事项+明日建议） |
 
@@ -283,7 +247,7 @@ python -m src.api.server --update
 - 数据更新成功立即触发洞察，不受时间窗口限制
 - prompt 中注入本轮数据更新上下文（`data_context`），大脑据此动态调整关注重点
 - 同一天只触发一次，避免重复通知
-- 数据质量优先：双数据源（花名册 + 加班）都更新成功才触发洞察；任一失败则跳过洞察并创建 HRIS 紧急工单
+- 数据质量优先：数据源都更新成功才触发洞察；任一失败则跳过洞察并创建 HRIS 紧急工单
 
 **新架构（InsightDataProvider 统一数据源）：**
 
@@ -293,7 +257,7 @@ Daily Data Refresh
   ├─ _gather_auth_db_stats() / _gather_memory_db_stats()（scheduler.py）→ 系统指标
   ↓
   InsightDataProvider.get_enterprise_insight() → 结构化 dict
-  ├─ roster_summary / overtime_summary（花名册/加班摘要）
+  ├─ roster_summary / overtime_summary（花名册/考勤摘要）
   ├─ roster_detail / overtime_detail（明细）
   └─ system_metrics（工单/任务/用户/事件统计）
   ↓
@@ -330,7 +294,7 @@ Authorization: Bearer <管理员token>
 
 **使用场景：**
 1. 定时数据更新失败后，修复数据源需要补跑洞察
-2. HRIS 手动更新了花名册或加班数据，需要立即产出洞察
+2. HRIS 手动更新了数据，需要立即产出洞察
 3. 服务刚启动或错过 05:00 时间窗口，需要补跑当日洞察
 
 该接口不受时间守卫限制，强制重置当日洞察状态后立即执行。
@@ -377,12 +341,6 @@ python scripts/cleanup_test_data.py
 ### 数据更新脚本
 
 ```bash
-# 刷新花名册
-python -X utf8 scripts/refresh_roster.py
-
-# 构建加班数据
-python -X utf8 scripts/build_overtime.py
-
 # 同步用户配置
 python -X utf8 scripts/sync_users_from_json.py
 ```

@@ -57,3 +57,15 @@ data/skill_packages/*/
 skills/*/SKILL.md
 skills/*/scripts/
 skills/local_manifest.json
+
+# Internal config & privacy (do not open source)
+.agents/
+.clinerules/
+.codebase-memory/
+.specify/
+design/
+memory/
+specs/
+cline-desktop-settings.json
+harness.config.json
+desensitized_*.xlsx

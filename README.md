@@ -131,7 +131,7 @@ python -X utf8 -m staff.terminal --server http://localhost:8000 --user Vxxxxx --
     {
       "type": "create_ticket",
       "target_role": "员工关系专员",
-      "target_username": "110807",
+      "target_username": "USER_EXAMPLE",
       "title": "员工咨询劳动仲裁事宜",
       "description": "详细描述",
       "priority": "urgent",

@@ -216,10 +216,10 @@ def resolve_notification_targets_v2(
         if role in ("总经理", "副总经理"):
             return [username]
         # SSC 经理接收所有公司级洞察
-        if role == "HR_SSC学科经理":
+        if role == "HR_SSC经理":
             return [username]
         # HRIS 工程师接收系统类
-        if role in ("HRIS工程师", "高级HRIS工程师") and insight_type == "hris":
+        if role in ("HRIS工程师") and insight_type == "hris":
             return [username]
         return []
 
@@ -247,11 +247,11 @@ def resolve_notification_targets_v2(
     # === 2. SSC 路由 ===
 
     # SSC 经理接收所有 SSC 相关洞察
-    if role == "HR_SSC学科经理":
+    if role == "HR_SSC经理":
         return [username]
 
     # HRIS 工程师接收系统/数据类
-    if role in ("HRIS工程师", "高级HRIS工程师"):
+    if role in ("HRIS工程师", "HRIS工程师"):
         if insight_type == "hris":
             return [username]
         # 预算数据异常也推送给 HRIS

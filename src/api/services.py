@@ -115,8 +115,6 @@ def get_tickets(username=None, role=None, status=None, view=None):
         is_ssc = role and role in (
             "HR_SSC经理",
             "HRIS工程师",
-            "HR_SSC学科经理",
-            "高级HRIS工程师",
             "招聘主管",
             "招聘专员",
             "员工关系专员",
@@ -213,7 +211,7 @@ def get_ticket_detail(ticket_no, username, role):
     is_assignee = (
         username in assignee_str or display_name in assignee_str or role in assignee_str
     )
-    is_admin = role in ("admin", "HR_SSC经理", "HRIS工程师", "HR_SSC学科经理")
+    is_admin = role in ("admin", "HR_SSC经理", "HRIS工程师", "HR_SSC经理")
     if not (is_submitter or is_assignee or is_admin):
         return {"error": "无权查看此工单"}
     return ticket
@@ -523,7 +521,7 @@ def transfer_ticket(ticket_no, from_username, to_username, reason, from_role):
         return {"success": False, "error": f"工单 {ticket_no} 不存在"}
 
     # 权限检查
-    is_admin = from_role in ("HR_SSC经理", "HRIS工程师", "HR_SSC学科经理")
+    is_admin = from_role in ("HR_SSC经理", "HRIS工程师", "HR_SSC经理")
     assignee_str = ticket.get("assignee") or ""
     is_assignee = (
         from_username in assignee_str or ticket.get("submitter") == from_username
@@ -939,7 +937,7 @@ def resolve_notification_targets(
                     return [username] if username else []
             return []
 
-        if role == "HR_SSC学科经理":
+        if role == "HR_SSC经理":
             if insight_type in ("hris", "headcount", "cost", "attendance", "er", ""):
                 if insight_level == "company":
                     return [username] if username else []
@@ -1015,8 +1013,8 @@ def resolve_notification_targets(
                     return [username] if username else []
             return []
 
-    # 4. SSC 学科经理
-    if "HR_SSC学科经理" in all_roles:
+    # 4. SSC 经理
+    if "HR_SSC经理" in all_roles:
         if insight_type in ("hris", "headcount", "cost", "attendance", "er", ""):
             if insight_level == "company":
                 return [username] if username else []

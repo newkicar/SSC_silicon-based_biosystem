@@ -171,11 +171,11 @@ class DashboardDataProvider:
         return self._get_cache("org", loader)
 
     def _load_overtime_df(self):
-        """加载加班基础数据（pandas DataFrame，带缓存）"""
+        """加载考勤基础数据（pandas DataFrame，带缓存）"""
         import pandas as pd
 
         def loader():
-            fpath = DB_DIR / "加班基础数据.xlsx"
+            fpath = DB_DIR / "考勤基础数据.xlsx"
             if not fpath.exists():
                 return None
             df = pd.read_excel(str(fpath), dtype=str)
@@ -189,8 +189,8 @@ class DashboardDataProvider:
             df["考勤月份_int"] = (
                 pd.to_numeric(df["考勤月份"], errors="coerce").fillna(0).astype(int)
             )
-            df["当日加班时长_num"] = pd.to_numeric(
-                df["当日加班时长"], errors="coerce"
+            df["当日考勤时长_num"] = pd.to_numeric(
+                df["当日考勤时长"], errors="coerce"
             ).fillna(0.0)
             df["员工编号_str"] = df["员工编号"].astype(str).str.strip()
             # 考勤日期标准化为 YYYY-MM 格式
@@ -204,7 +204,7 @@ class DashboardDataProvider:
         return self._get_cache("overtime_df", loader, ttl=600)
 
     def get_available_months(self) -> list:
-        """从加班基础数据的考勤日期列获取所有可用月份（去重、降序）"""
+        """从考勤基础数据的考勤日期列获取所有可用月份（去重、降序）"""
         cache_key = "available_months"
 
         def loader():
@@ -287,7 +287,7 @@ class DashboardDataProvider:
             )
         )
 
-        # 从加班基础数据的"考勤日期"列获取可用月份（最频繁更新的数据表）
+        # 从考勤基础数据的"考勤日期"列获取可用月份（最频繁更新的数据表）
         months = self.get_available_months()
 
         return {
@@ -865,14 +865,14 @@ class DashboardDataProvider:
         return result
 
     def get_overtime_data(self, filters: dict = None) -> dict:
-        """获取加班数据（带结果缓存）"""
+        """获取考勤数据（带结果缓存）"""
         cache_key = f"overtime|{self._filters_key(filters)}"
         return self._get_result_cache(
             cache_key, lambda: self._compute_overtime(filters), ttl=300
         )
 
     def _compute_overtime(self, filters=None):
-        """实际计算加班数据（图表1：中心级，图表2：部门级）
+        """实际计算考勤数据（图表1：中心级，图表2：部门级）
         - 中心图表：按公司+月份+人员类型过滤，横坐标为中心，从高到低
         - 部门图表：按公司+中心+月份+人员类型过滤，横坐标为部门，从高到低
         - 不使用二级部门
@@ -910,10 +910,10 @@ class DashboardDataProvider:
                 "company_avg": 0,
             }
 
-        # Step 1: 按员工编号+考勤年份+考勤月份汇总每人当月加班时长
+        # Step 1: 按员工编号+考勤年份+考勤月份汇总每人当月考勤时长
         emp_monthly = df.groupby(
             ["员工编号_str", "考勤年份_int", "考勤月份_int"], as_index=False
-        ).agg(overtime=("当日加班时长_num", "sum"))
+        ).agg(overtime=("当日考勤时长_num", "sum"))
 
         # 获取中心、部门映射
         emp_info_center = df.groupby("员工编号_str")["中心"].first().to_dict()
@@ -986,7 +986,7 @@ class DashboardDataProvider:
                 target_year = int(parts[0])
                 target_month = int(parts[1])
         else:
-            # 从加班数据获取最新月份
+            # 从考勤数据获取最新月份
             avail = self.get_available_months()
             if avail:
                 parts = avail[0].split("-")
@@ -1036,7 +1036,7 @@ class DashboardDataProvider:
             if cat == "间接主动离职率" and y == target_year and m == target_month:
                 turnover_map[name] = _safe_float(r.get("离职率"))
 
-        # === 4. 本月出勤率（加班数据，部门当日出勤率 按部门求平均）===
+        # === 4. 本月出勤率（考勤数据，部门当日出勤率 按部门求平均）===
         ot_df = self._load_overtime_df()
         attendance_map = {}
         if ot_df is not None and not ot_df.empty:
@@ -1058,7 +1058,7 @@ class DashboardDataProvider:
                 )
                 attendance_map = att.to_dict()
 
-        # === 5. 人均加班（加班数据，按员工+年+月汇总，再按部门求平均）===
+        # === 5. 人均考勤（考勤数据，按员工+年+月汇总，再按部门求平均）===
         overtime_map = {}
         if ot_df is not None and not ot_df.empty:
             ot_filtered = ot_df[
@@ -1076,7 +1076,7 @@ class DashboardDataProvider:
             if not ot_filtered.empty:
                 emp_ot = ot_filtered.groupby(
                     ["员工编号", "考勤年份_int", "考勤月份_int", "部门"], as_index=False
-                ).agg(ot_hours=("当日加班时长_num", "sum"))
+                ).agg(ot_hours=("当日考勤时长_num", "sum"))
                 dept_ot = emp_ot.groupby("部门")["ot_hours"].mean()
                 overtime_map = dept_ot.to_dict()
 

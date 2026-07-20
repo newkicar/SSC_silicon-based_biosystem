@@ -20,7 +20,7 @@
     },
     {
       "type": "dispatch_cli_task",
-      "target_role": "HR_SSC学科经理",
+      "target_role": "HR_SSC经理",
       "title": "...",
       "description": "...",
       "skill_name": "employment_certificate",
@@ -72,8 +72,6 @@ def _load_role_mappings() -> tuple[dict, dict, dict, set]:
         "招聘主管": "zhaopin_mgr",
         "HRIS工程师": "hris_eng",
         "HR_SSC经理": "ssc_mgr",
-        "HR_SSC学科经理": "ssc_subject_mgr",
-        "高级HRIS工程师": "hris_senior",
     }
     _default_dept = {
         "员工关系专员": "DEPT_EMPLOYEE_RELATIONS",
@@ -85,8 +83,6 @@ def _load_role_mappings() -> tuple[dict, dict, dict, set]:
         "招聘主管": "DEPT_RECRUITMENT",
         "HRIS工程师": "DEPT_HRIS",
         "HR_SSC经理": "DEPT_MANAGEMENT",
-        "HR_SSC学科经理": "DEPT_MANAGEMENT",
-        "高级HRIS工程师": "DEPT_HRIS",
     }
     try:
         from src.security.auth import get_role_department_mapping
@@ -544,8 +540,8 @@ def _dispatch_notification(action: dict, seen: set) -> dict:
                     JOIN user_roles ur ON u.id = ur.user_id
                     WHERE ur.org = ?
                       AND ur.role IN (
-                          'HR_SSC经理', 'HR_SSC学科经理',
-                          'HRIS工程师', '高级HRIS工程师'
+                          'HR_SSC经理', 'HR_SSC经理',
+                          'HRIS工程师', 'HRIS工程师'
                       )
                       AND u.status = 'active'
                     """,

@@ -1,12 +1,12 @@
 """
-加班基础数据自动构建脚本
+考勤基础数据自动构建脚本
 
-从SAP考勤API获取全年考勤数据，结合花名册计算：
-- 每人每月加班时长（白领/蓝领不同算法）
-- 部门/中心/公司月加班统计
+从ERP考勤API获取全年考勤数据，结合花名册计算：
+- 每人每月考勤时长（白领/蓝领不同算法）
+- 部门/中心/公司月考勤统计
 - 出勤率（个人/部门/中心/公司）
 
-输出: databases/加班基础数据.xlsx（追加写入，当月覆盖，跨月累加）
+输出: databases/考勤基础数据.xlsx（追加写入，当月覆盖，跨月累加）
 """
 
 import sys
@@ -33,11 +33,11 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DB_DIR = PROJECT_ROOT / "databases"
 ROSTER_PATH = DB_DIR / "员工花名册.xlsx"
 EXCLUDE_PATH = DB_DIR / "assistance" / "不统计的人.xlsx"
-OUTPUT_PATH = DB_DIR / "加班基础数据.xlsx"
+OUTPUT_PATH = DB_DIR / "考勤基础数据.xlsx"
 
-SAP_API_URL = "http://{{SAP_API_HOST}}:8080/system/sap/queryAttendance"
-SAP_AUTH_CODE = "{{SAP_AUTH_CODE_ATTENDANCE}}"
-SAP_PUBLIC_KEY = "{{RSA_PUBLIC_KEY_ATTENDANCE}}"
+ERP_API_URL = "http://{{ERP_API_HOST}}:8080/system/ERP/queryAttendance"
+ERP_AUTH_CODE = "{{ERP_AUTH_CODE_ATTENDANCE}}"
+ERP_PUBLIC_KEY = "{{RSA_PUBLIC_KEY_ATTENDANCE}}"
 
 
 def get_default_date_range():
@@ -114,7 +114,7 @@ EXCLUDE_LEAVE_TYPES = {"产假", "陪产假", "流产假", "工伤假", "婚假"
 
 # ==================== RSA加密 ====================
 def rsa_encrypt(plain_text: str) -> str:
-    key_der = base64.b64decode(SAP_PUBLIC_KEY)
+    key_der = base64.b64decode(ERP_PUBLIC_KEY)
     rsa_key = RSA.import_key(key_der)
     cipher = PKCS1_v1_5.new(rsa_key)
     encrypted = cipher.encrypt(plain_text.encode("utf-8"))
@@ -123,13 +123,13 @@ def rsa_encrypt(plain_text: str) -> str:
 
 def generate_auth_info():
     today = datetime.now().strftime("%Y%m%d")
-    return rsa_encrypt(f"{today}&{SAP_AUTH_CODE}")
+    return rsa_encrypt(f"{today}&{ERP_AUTH_CODE}")
 
 
 # ==================== 工号标准化 ====================
 def _normalize_eid_suffix(raw_eid: str) -> str:
     """提取工号后6位纯数字。
-    花名册工号可能带L前缀(L11095)、00前缀(0011095)、或原样(11095)，
+    
     [ERP系统接口]工号统一00前缀(0011095=8位)。后6位一致，以此为内部统一key。
     """
     s = str(raw_eid).strip()
@@ -284,14 +284,14 @@ def fetch_attendance_batch(employees, begin_date, end_date, auth_info):
 
     for idx, (eid_suffix, info) in enumerate(employees.items()):
         params = {
-            "personNo": "00" + eid_suffix,  # SAP统一 00 + 后6位
+            "personNo": "00" + eid_suffix,  
             "beginDate": begin_date,
             "endDate": end_date,
             "authInfo": auth_info,
         }
         try:
             resp = requests.post(
-                SAP_API_URL,
+                ERP_API_URL,
                 json=params,
                 headers={"Content-Type": "application/json"},
                 timeout=10,
@@ -342,10 +342,10 @@ def parse_leave_types(leave_type_str):
     return [t.strip() for t in str(leave_type_str).split(",") if t.strip()]
 
 
-# ==================== Step 6: 计算单日加班时长 ====================
+# ==================== Step 6: 计算单日考勤时长 ====================
 def compute_daily_overtime(record, collar):
     """
-    计算单日加班时长
+    计算单日考勤时长
     编制类型含"Salary"（含Salary/Indirect Salary）: attendanceDuration + leaveDuration(合计) - 8
     否则（纯蓝领）: overtimeDuration + overtimeHDuration + overtimeWDuration
     """
@@ -355,7 +355,7 @@ def compute_daily_overtime(record, collar):
         leave_dur_list = parse_leave_duration(record.get("leaveDuration"))
         leave_total = sum(leave_dur_list)
         overtime = att_duration + leave_total - 8
-        return max(overtime, 0)  # 不允许负加班
+        return max(overtime, 0)  # 不允许负考勤
     else:
         # 蓝领
         ot_dur = float(record.get("overtimeDuration", 0) or 0)
@@ -419,7 +419,7 @@ def parse_int_field(val, default=0):
 def main():
     import argparse
 
-    parser = argparse.ArgumentParser(description="加班基础数据自动构建")
+    parser = argparse.ArgumentParser(description="考勤基础数据自动构建")
     parser.add_argument(
         "--begin", type=str, default="", help="起始日期 (YYYY-MM-DD)，默认本月1日"
     )
@@ -438,7 +438,7 @@ def main():
 
     start_time = time.time()
     print("=" * 60)
-    print("加班基础数据自动构建")
+    print("考勤基础数据自动构建")
     print(f"日期范围: {begin_date_str} ~ {end_date_str}")
     print(f"输出: {OUTPUT_PATH}")
     print("=" * 60)
@@ -520,7 +520,7 @@ def main():
             em = emp_monthly[eid]
             em["days"].append(att_date)
 
-            # 加班时长
+            # 考勤时长
             daily_ot = compute_daily_overtime(rec, collar)
             em["total_overtime"] += daily_ot
 
@@ -548,7 +548,7 @@ def main():
             if "夜班" in classes:
                 em["night_shift"] += 1
 
-            # 工作日/双休/法定加班
+            # 工作日/双休/法定考勤
             em["workday_ot"] += float(rec.get("overtimeWDuration", 0) or 0)
             em["weekend_ot"] += float(rec.get("overtimeHDuration", 0) or 0)
             em["holiday_ot"] += float(rec.get("overtimeADuration", 0) or 0)
@@ -559,7 +559,7 @@ def main():
             if not info:
                 continue
 
-            # 月加班时长
+            # 月考勤时长
             monthly_ot = em["total_overtime"]
 
             # 月出勤率
@@ -568,17 +568,17 @@ def main():
 
             num_days = len(em["days"])
 
-            # 日均加班
+            # 日均考勤
             daily_avg = monthly_ot / num_days if num_days > 0 else 0
 
             # 日均小于半小时/一小时
             less_half = "是" if 0 < daily_avg < 0.5 else "否"
             less_one = "是" if 0 < daily_avg < 1.0 else "否"
 
-            # 近两个月加班时长大于60（暂标记否，后续可跨月计算）
+            # 近两个月考勤时长大于60（暂标记否，后续可跨月计算）
             over_60 = "是" if monthly_ot > 60 else "否"
 
-            # 加班时长小于1小时的日均时长
+            # 考勤时长小于1小时的日均时长
             less_1h_daily = daily_avg if daily_avg < 1 else 0
 
             row = {
@@ -601,17 +601,17 @@ def main():
                 "入职日期": str(info.get("入职时间", "")).strip(),
                 "考勤日期": f"2026-{month_num:02d}-01",
                 "考勤年份": "2026年",
-                "白领员工月人均加班时长": None,  # 后续填充
-                "蓝领员工月人均加班时长": None,  # 后续填充
-                "部门月加班人数占比": None,  # 后续填充
-                "中心月加班人数占比": None,  # 后续填充
+                "白领员工月人均考勤时长": None,  # 后续填充
+                "蓝领员工月人均考勤时长": None,  # 后续填充
+                "部门月考勤人数占比": None,  # 后续填充
+                "中心月考勤人数占比": None,  # 后续填充
                 "部门月总人数": None,  # 后续填充
                 "中心月总人数": None,  # 后续填充
                 "公司月总人数": None,  # 后续填充
                 "白领蓝领月总人数": None,  # 后续填充
                 "日均小于半小时": less_half,
                 "日均小于一小时": less_one,
-                "近两个月加班时长大于60小时": over_60,
+                "近两个月考勤时长大于60小时": over_60,
                 "考勤月份": month_num,
                 "补卡次数": em["punch_card_count"],
                 "漏打卡次数": em["miss_card_count"],
@@ -619,12 +619,12 @@ def main():
                 "迟到次数": em["late"],
                 "迟到和早退": em["late"] + em["early"],
                 "夜班次数": em["night_shift"],
-                "工作日加班": round(em["workday_ot"], 2),
-                "双休加班": round(em["weekend_ot"], 2),
-                "法定加班": round(em["holiday_ot"], 2),
+                "工作日考勤": round(em["workday_ot"], 2),
+                "双休考勤": round(em["weekend_ot"], 2),
+                "法定考勤": round(em["holiday_ot"], 2),
                 "旷工小时数": round(em["absentee"], 2),
-                "当日加班时长": round(monthly_ot, 2),
-                "加班时长小于1小时的日均时长": round(less_1h_daily, 2),
+                "当日考勤时长": round(monthly_ot, 2),
+                "考勤时长小于1小时的日均时长": round(less_1h_daily, 2),
                 "员工当日出勤率": (
                     round(personal_attendance, 6)
                     if personal_attendance is not None
@@ -647,10 +647,10 @@ def main():
 
     # 将"后续填充"的列统一转为 float，避免后续写入数值时报 dtype 'str' 错误
     fill_cols = [
-        "白领员工月人均加班时长",
-        "蓝领员工月人均加班时长",
-        "部门月加班人数占比",
-        "中心月加班人数占比",
+        "白领员工月人均考勤时长",
+        "蓝领员工月人均考勤时长",
+        "部门月考勤人数占比",
+        "中心月考勤人数占比",
         "部门月总人数",
         "中心月总人数",
         "公司月总人数",
@@ -661,7 +661,7 @@ def main():
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
-    df["当日加班时长_num"] = pd.to_numeric(df["当日加班时长"], errors="coerce").fillna(
+    df["当日考勤时长_num"] = pd.to_numeric(df["当日考勤时长"], errors="coerce").fillna(
         0
     )
     df["员工当日出勤率_num"] = pd.to_numeric(df["员工当日出勤率"], errors="coerce")
@@ -672,7 +672,7 @@ def main():
         dept_att_mean = dept_attendance.mean() if len(dept_attendance) > 0 else None
 
         dept_size = len(group)
-        dept_ot_people = (group["当日加班时长_num"] > 0).sum()
+        dept_ot_people = (group["当日考勤时长_num"] > 0).sum()
         dept_ot_ratio = dept_ot_people / dept_size if dept_size > 0 else 0
 
         # 中心人数
@@ -684,7 +684,7 @@ def main():
 
         center_size = len(center_group)
         company_size = len(company_group)
-        center_ot_people = (center_group["当日加班时长_num"] > 0).sum()
+        center_ot_people = (center_group["当日考勤时长_num"] > 0).sum()
         center_ot_ratio = center_ot_people / center_size if center_size > 0 else 0
 
         # 蓝领白领
@@ -692,10 +692,10 @@ def main():
         blue_collar = group[group["蓝领白领"] != "白领"]
 
         white_avg = (
-            white_collar["当日加班时长_num"].mean() if len(white_collar) > 0 else None
+            white_collar["当日考勤时长_num"].mean() if len(white_collar) > 0 else None
         )
         blue_avg = (
-            blue_collar["当日加班时长_num"].mean() if len(blue_collar) > 0 else None
+            blue_collar["当日考勤时长_num"].mean() if len(blue_collar) > 0 else None
         )
 
         # 填回
@@ -703,21 +703,21 @@ def main():
             df.at[idx, "部门当日出勤率"] = (
                 round(float(dept_att_mean), 6) if pd.notna(dept_att_mean) else None
             )
-            df.at[idx, "部门月加班人数占比"] = round(dept_ot_ratio, 4)
-            df.at[idx, "中心月加班人数占比"] = round(center_ot_ratio, 4)
+            df.at[idx, "部门月考勤人数占比"] = round(dept_ot_ratio, 4)
+            df.at[idx, "中心月考勤人数占比"] = round(center_ot_ratio, 4)
             df.at[idx, "部门月总人数"] = dept_size
             df.at[idx, "中心月总人数"] = center_size
             df.at[idx, "公司月总人数"] = company_size
             df.at[idx, "白领蓝领月总人数"] = len(group)
-            df.at[idx, "白领员工月人均加班时长"] = (
+            df.at[idx, "白领员工月人均考勤时长"] = (
                 round(float(white_avg), 2) if pd.notna(white_avg) else None
             )
-            df.at[idx, "蓝领员工月人均加班时长"] = (
+            df.at[idx, "蓝领员工月人均考勤时长"] = (
                 round(float(blue_avg), 2) if pd.notna(blue_avg) else None
             )
 
     # 删除临时列
-    df = df.drop(columns=["当日加班时长_num", "员工当日出勤率_num"], errors="ignore")
+    df = df.drop(columns=["当日考勤时长_num", "员工当日出勤率_num"], errors="ignore")
 
     # 8. 合并写入：删旧月数据 → 追加新月数据
     print(f"\n写入 {OUTPUT_PATH}...")

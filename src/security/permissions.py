@@ -52,7 +52,7 @@ ROLE_PERMISSIONS = {
         "approval_level": 2,
     },
     # ==================== SSC操作层角色 ====================
-    "HR_SSC学科经理": {
+    "HR_SSC经理": {
         "deny_fields": [],
         "scope_restricted": False,
         "scope_level": "company",
@@ -63,12 +63,6 @@ ROLE_PERMISSIONS = {
         "scope_restricted": False,
         "scope_level": "company",
         "approval_level": 4,
-    },
-    "高级HRIS工程师": {
-        "deny_fields": [],
-        "scope_restricted": False,
-        "scope_level": "company",
-        "approval_level": 0,
     },
     "HRIS工程师": {
         "deny_fields": [],

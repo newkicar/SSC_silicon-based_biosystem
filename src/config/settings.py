@@ -16,11 +16,11 @@ SKILLS_DIR = BASE_DIR / "skills"
 
 # ==================== 大模型配置 ====================
 LLM_CONFIG = {
-    "model": "step-3.7-flash",
-    "base_url": "https://api.stepfun.com/step_plan/v1",
+    "model": "MODEL_NAME",
+    "base_url": "MODEL_URL",
     "temperature": 0,
     "max_tokens": 1024,
-    "api_key": "1YJ1Zl06bUJraPbIipRybu8flP4oGj91VLTqsPFaXiHyrm1PRrh2jYG4Q8Egb0xwh",
+    "api_key": "YOUR_API_KEY",
     "request_timeout": 120,
     "max_retries": 2,
 }
@@ -29,7 +29,7 @@ LLM_CONFIG = {
 class ToolCallFixChatOpenAI(ChatOpenAI):
     """修复非标准工具调用格式的 ChatOpenAI 封装
     
-    step-3.7-flash 返回 tool_calls 时 args 可能是 list 而非 dict，
+    MODEL_NAME 返回 tool_calls 时 args 可能是 list 而非 dict，
     需要在 langchain 验证前修正格式。
     """
     def _create_chat_result(self, response, generation_info=None):

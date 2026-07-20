@@ -203,8 +203,6 @@ def init_auth_db():
             ("招聘主管", "DEPT_RECRUITMENT", "zhaopin_mgr"),
             ("HRIS工程师", "DEPT_HRIS", "hris_eng"),
             ("HR_SSC经理", "DEPT_MANAGEMENT", "ssc_mgr"),
-            ("HR_SSC学科经理", "DEPT_MANAGEMENT", "ssc_subject_mgr"),
-            ("高级HRIS工程师", "DEPT_HRIS", "hris_senior"),
         ]
         cursor.executemany(
             """INSERT INTO role_departments (role_name, department, assignee_code)
@@ -243,7 +241,7 @@ def register_user(
         username: 登录用户名（通常为工号）
         password: 明文密码（内部自动哈希）
         display_name: 显示名称
-        role: 主角色（对应RBAC：总经理/总监/经理/HRBP/HR_SSC学科经理等）
+        role: 主角色（对应RBAC：总经理/总监/经理/HRBP/HR_SSC经理等）
         department: 所属部门
         employee_id: 员工工号
         company: 所属公司（虚拟公司A/虚拟公司B）

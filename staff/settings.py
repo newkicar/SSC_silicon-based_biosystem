@@ -16,15 +16,15 @@ SERVER_URL = os.environ.get("SSC_SERVER_URL", "http://localhost:8000")
 # 员工端 /skill 执行时，deepagents 需要直连内网大模型
 # 普通聊天消息走服务端 API，不使用此配置
 LLM_CONFIG = {
-    "model": "[大模型名称]",
-    "base_url": "http://{{LLM_API_HOST}}:8899/v1",
+    "model": "model_name",
+    "base_url": "LLM_API_URL",
     "temperature": 0,
     "max_tokens": 4096,
-    "api_key": "sk-123456",
+    "api_key": "LLM_API_KEY",
 }
 
 # ==================== LangSmith 配置 ====================
 LANGSMITH_CONFIG = {
     "tracing": "true",
-    "api_key": "{{LANGSMITH_API_KEY}}",
+    "api_key": "LANGSMITH_API_KEY",
 }

@@ -22,9 +22,9 @@ import requests as http_requests
 from src.config.settings import RAG_DIR, DATA_DIR, DB_DIR
 
 # ==================== Embedding配置 ====================
-EMBEDDING_API_URL = "http://{{EMBEDDING_API_HOST}}:11434/v1/embeddings"
-EMBEDDING_MODEL = "qllama/bge-m3:latest"
-EMBEDDING_API_KEY = "sk-local"
+EMBEDDING_API_URL = "EMBEDDING_API_URL"
+EMBEDDING_MODEL = "EMBEDDING_MODEL_NAME"
+EMBEDDING_API_KEY = "EMBEDDING_API_KEY"
 EMBEDDING_DIM = 1024
 EMBEDDING_BATCH_SIZE = 32  # 每批发送的文本数量
 

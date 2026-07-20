@@ -1,6 +1,6 @@
 """
 花名册自动刷新脚本
-从清册中提取数据，结合[ERP系统接口]的岗级信息，生成完整的花名册。
+从花名册中提取数据，结合[ERP系统接口]的岗级信息，生成完整的花名册。
 """
 
 import sys
@@ -26,36 +26,36 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DB_DIR = PROJECT_ROOT / "databases"
 
 
-# 通配解析：自动匹配目录中最新的  清册文件
+# 通配解析：自动匹配目录中最新的  花名册文件
 def _resolve_latest(pattern: str, label: str) -> Path:
     """从 pattern（含 * 通配符）中解析出匹配的最新文件路径。"""
     matches = sorted(glob.glob(pattern))
     if not matches:
         raise FileNotFoundError(
             f"未找到匹配的文件: {pattern}\n"
-            f"请确认 H 盘已挂载且目录中存在 '{label}' 清册文件。"
+            f"请确认 H 盘已挂载且目录中存在 '{label}' 花名册文件。"
         )
     return Path(matches[-1])  # 取最新（按文件名排序的最后一条）
 
 
-CC_PATH = _resolve_latest(
-    r"{{INTERNAL_HR_PATH}}03-SSC share\05-人员基数数据\新版CC人员清册*.xlsx", "CC"
+城市A_PATH = _resolve_latest(
+    r"{{INTERNAL_HR_PATH}}03-SSC share\05-人员基数数据\城市A人员花名册*.xlsx", "城市A"
 )
-DL_PATH = _resolve_latest(
-    r"{{INTERNAL_HR_PATH}}03-SSC share\05-人员基数数据\新版DL人员清册*.xlsx", "DL"
+城市B_PATH = _resolve_latest(
+    r"{{INTERNAL_HR_PATH}}03-SSC share\05-人员基数数据\城市B人员花名册*.xlsx", "城市B"
 )
-print(f"  CC文件: {CC_PATH.name}")
-print(f"  DL文件: {DL_PATH.name}")
+print(f"  城市A文件: {城市A_PATH.name}")
+print(f"  城市B文件: {城市B_PATH.name}")
 
 EXISTING_PATH = DB_DIR / "员工花名册.xlsx"
 
-CC_PASSWORD = "{{EXCEL_PASSWORD_CC}}"
-DL_PASSWORD = "{{EXCEL_PASSWORD_CC}}111"
+城市A_PASSWORD = "{{EXCEL_PASSWORD_城市A}}"
+城市B_PASSWORD = "{{EXCEL_PASSWORD_城市B}}"
 
 # [ERP系统接口]
-SAP_API_URL = "http://{{SAP_API_HOST}}:8080/system/sap/querySapRoster"
-SAP_AUTH_CODE = "{{SAP_AUTH_CODE_ROSTER}}"
-SAP_PUBLIC_KEY = "{{RSA_PUBLIC_KEY_ROSTER}}"
+ERP_API_URL = "http://{{ERP_API_HOST}}:8080/system/ERP/queryERPRoster"
+ERP_AUTH_CODE = "{{ERP_AUTH_CODE_ROSTER}}"
+ERP_PUBLIC_KEY = "{{RSA_PUBLIC_KEY_ROSTER}}"
 
 
 # ==================== RSA加密工具 ====================
@@ -73,8 +73,8 @@ def _rsa_encrypt(plain_text: str, public_key_str: str) -> str:
 
 def generate_auth_info():
     today = datetime.now().strftime("%Y%m%d")
-    plaintext = f"{today}&{SAP_AUTH_CODE}"
-    return _rsa_encrypt(plaintext, SAP_PUBLIC_KEY)
+    plaintext = f"{today}&{ERP_AUTH_CODE}"
+    return _rsa_encrypt(plaintext, ERP_PUBLIC_KEY)
 
 
 # ==================== Step 1: 解密 + 合并 ====================
@@ -132,8 +132,8 @@ def step1_stack_sheets():
     print("=" * 60)
 
     sources = [
-        ("CC", CC_PATH, CC_PASSWORD),
-        ("DL", DL_PATH, DL_PASSWORD),
+        ("城市A", 城市A_PATH, 城市A_PASSWORD),
+        ("城市B", 城市B_PATH, 城市B_PASSWORD),
     ]
 
     all_headers = None
@@ -212,7 +212,7 @@ def step2_fetch_postlevel():
 
     payload = {"authInfo": auth_info}
     try:
-        resp = requests.post(SAP_API_URL, json=payload, timeout=60)
+        resp = requests.post(ERP_API_URL, json=payload, timeout=60)
         resp.raise_for_status()
         data = resp.json()
 
@@ -303,7 +303,7 @@ def step3_parse_postlevel(postlevel_str):
 # ==================== Step 4: 员工号匹配 ====================
 def step4_match_roster(headers, data_rows, level_map):
     """
-    按员工号后6位匹配SAP的postLevel，写入大级别。
+    按员工号后6位匹配ERP的postLevel，写入大级别。
     同时做实习生覆盖和员工号L开头处理。
     """
     print("\n" + "=" * 60)
@@ -373,10 +373,10 @@ def step4_match_roster(headers, data_rows, level_map):
         # 取员工号后6位
         eid_suffix = eid[-6:] if len(eid) >= 6 else eid
 
-        # 从SAP level_map匹配
-        sap_level = level_map.get(eid_suffix)
-        if sap_level:
-            parsed = step3_parse_postlevel(sap_level)
+        # 从ERP level_map匹配
+        ERP_level = level_map.get(eid_suffix)
+        if ERP_level:
+            parsed = step3_parse_postlevel(ERP_level)
             row[level_col] = parsed
             matched_count += 1
         else:
@@ -391,8 +391,8 @@ def step4_match_roster(headers, data_rows, level_map):
         if contract == "实习生" or emp_nature == "实习生":
             row[level_col] = "-"
 
-    print(f"  SAP匹配成功: {matched_count}")
-    print(f"  SAP未匹配: {unmatched_count}")
+    print(f"  ERP匹配成功: {matched_count}")
+    print(f"  ERP未匹配: {unmatched_count}")
     print(f"  L开头外包: {l_prefix_count}")
 
     return headers, data_rows
@@ -1006,7 +1006,7 @@ def main():
     # Step 1: 解密合并
     headers, data_rows = step1_stack_sheets()
 
-    # Step 2: 获取SAP岗级
+    # Step 2: 获取ERP岗级
     level_map = step2_fetch_postlevel()
 
     # Step 3-4: 匹配大级别

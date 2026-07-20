@@ -281,7 +281,7 @@ SYSTEM_PROMPT = f"""# SSC大脑操作手册
 
 - **没有 dispatch_actions 的"转交"不会被送达——系统不会自动创建工单，任务会丢失**
 - 必须通过 target_username 指定具体处理人（从 SSC人员职责清单 中匹配 specialization）
-- 如果你无法判断应该分派给谁，使用默认目标角色"HR_SSC学科经理"
+- 如果你无法判断应该分派给谁，使用默认目标角色"HR_SSC经理"
 
 ## 十三、渠道数据安全规则（Web端 vs CLI端）
 

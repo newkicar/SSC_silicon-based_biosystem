@@ -152,20 +152,20 @@ def format_errors_as_guidance(errors: list) -> str:
             guidance_parts.append(
                 "❌ title 过于空泛。\n"
                 "   必须直接点明观察对象和结论，如：\n"
-                '   ✅ "[考勤]制造一中心人均加班65小时"\n'
+                '   ✅ "[考勤]制造一中心人均出勤65小时"\n'
                 '   ❌ "洞察A" / "成本洞察" / "通知B"'
             )
         elif "缺少 title" in err:
             guidance_parts.append(
                 "❌ 缺少 title 字段。\n"
                 "   格式：[类型]具体内容（20字以内）\n"
-                "   例：[考勤]全公司人均加班59小时"
+                "   例：[考勤]全公司人均出勤59小时"
             )
         elif "content" in err and "空泛" in err:
             guidance_parts.append(
                 "❌ content 过于空泛。\n"
                 "   必须包含：具体数据 + 变化趋势 + 关注要点（40-200字）\n"
-                '   例："6月全公司人均加班59.95小时，较上月上升12%。建议关注..."'
+                '   例："6月全公司人均出勤59.95小时，较上月上升12%。建议关注..."'
             )
         elif "缺少 content" in err:
             guidance_parts.append(
@@ -183,12 +183,12 @@ def format_errors_as_guidance(errors: list) -> str:
   "dispatch_actions": [{
     "type": "create_notification",
     "target_user": "110031",
-    "title": "[考勤]制造一中心人均加班59.95小时",
-    "content": "2026年6月制造一中心人均加班59.95小时...",
+    "title": "[考勤]XX心人均出勤xx小时",
+    "content": "2026年6月XX心人均出勤xx小时...",
     "priority": "high",
     "notif_type": "alert",
     "insight_level": "center",
-    "insight_org": "制造一中心",
+    "insight_org": "XX中心",
     "insight_type": "attendance"
   }]
 }""")

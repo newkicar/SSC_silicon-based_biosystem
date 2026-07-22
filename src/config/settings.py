@@ -16,11 +16,11 @@ SKILLS_DIR = BASE_DIR / "skills"
 
 # ==================== 大模型配置 ====================
 LLM_CONFIG = {
-    "model": "step-3.7-flash",
-    "base_url": "https://api.stepfun.com/step_plan/v1",
+    "model": "your_model_name",
+    "base_url": "your_base_url_here",
     "temperature": 0,
     "max_tokens": 1024,
-    "api_key": "1YJ1Zl06bUJraPbIipRybu8flP4oGj91VLTqsPFaXiHyrm1PRrh2jYG4Q8Egb0xwh",
+    "api_key": "your_api_key_here",
     "request_timeout": 120,
     "max_retries": 2,
 }

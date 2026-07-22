@@ -16,11 +16,11 @@ SKILLS_DIR = BASE_DIR / "skills"
 
 # ==================== 大模型配置 ====================
 LLM_CONFIG = {
-    "model": "MODEL_NAME",
-    "base_url": "MODEL_URL",
+    "model": "step-3.7-flash",
+    "base_url": "https://api.stepfun.com/step_plan/v1",
     "temperature": 0,
     "max_tokens": 1024,
-    "api_key": "YOUR_API_KEY",
+    "api_key": "1YJ1Zl06bUJraPbIipRybu8flP4oGj91VLTqsPFaXiHyrm1PRrh2jYG4Q8Egb0xwh",
     "request_timeout": 120,
     "max_retries": 2,
 }
@@ -69,12 +69,6 @@ def get_llm() -> ToolCallFixChatOpenAI:
     """获取带工具兼容补丁的大模型实例"""
     return ToolCallFixChatOpenAI(**LLM_CONFIG)
 
-
-# ==================== LangSmith 配置 ====================
-LANGSMITH_CONFIG = {
-    "tracing": "true",
-    "api_key": "{{LANGSMITH_API_KEY}}",
-}
 
 # ==================== 上行脊髓配置 ====================
 ASCENDING_SPINE = {

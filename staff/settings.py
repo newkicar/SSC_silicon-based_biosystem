@@ -23,8 +23,5 @@ LLM_CONFIG = {
     "api_key": "LLM_API_KEY",
 }
 
-# ==================== LangSmith 配置 ====================
-LANGSMITH_CONFIG = {
     "tracing": "true",
-    "api_key": "LANGSMITH_API_KEY",
 }

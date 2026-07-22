@@ -10,14 +10,11 @@
 from deepagents import create_deep_agent
 from deepagents.profiles import HarnessProfile, register_harness_profile
 from deepagents.backends import StateBackend
-from src.config.settings import get_llm, MEMORY_DIR, LANGSMITH_CONFIG
+from src.config.settings import get_llm, MEMORY_DIR
 from src.memory.md_memory import ensure_memory_file
 from src.skills import SKILL_REGISTRY
 import os
 
-os.environ["LANGSMITH_TRACING"] = LANGSMITH_CONFIG["tracing"]
-os.environ["LANGSMITH_API_KEY"] = LANGSMITH_CONFIG["api_key"]
-os.environ["LANGSMITH_PROJECT"] = "thomas_agent_silicon_brain"
 
 # ==================== 禁止大脑使用文件系统工具 ====================
 # deepagents 的 HarnessMiddleware 默认注入 read_file/write_file/edit_file/ls/glob/grep 等工具，

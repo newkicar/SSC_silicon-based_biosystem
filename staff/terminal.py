@@ -19,10 +19,6 @@ warnings.simplefilter("ignore")
 os.environ["PYTHONWARNINGS"] = "ignore"
 
 
-from staff.settings import LANGSMITH_CONFIG
-os.environ["LANGSMITH_TRACING"] = LANGSMITH_CONFIG["tracing"]
-os.environ["LANGSMITH_API_KEY"] = LANGSMITH_CONFIG["api_key"]
-os.environ["LANGSMITH_PROJECT"] = "thomas_agent_silicon_staff"
 
 if sys.platform == "win32":
     try:

@@ -186,6 +186,14 @@ async def startup_event():
     # 初始化Skill注册中心
     init_skill_registry()
     print("[API] Skill注册中心已初始化")
+    # 初始化统一数据层（task_bs / task_st / event_bus 表）
+    from src.data.task_queue import init_task_tables
+    init_task_tables()
+    print("[API] 统一数据层表已初始化")
+    # 初始化上下文池
+    from src.data.context_pool import init_context_pool
+    init_context_pool()
+    print("[API] 上下文池已初始化")
     # 启动定时调度器（数据更新、洞察、记忆整理等）
     from src.scheduler.scheduler import Scheduler
 
